@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ff00"
+                android:elevation="@dimen/j_eleva_top"
+                android:clickable="true"
+                android:gravity="center"
+                android:foreground="?attr/selectableItemBackground">
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                  android:orientation="vertical"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:elevation="@dimen/j_eleva_top"
+                  android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/j_eleva_top"
+            android:text="Whoops! Something went wrong" />
+
+        <Button
+            android:id="@+id/j_multity_retry"
+            style="?android:borderlessButtonStyle"
+            android:elevation="@dimen/j_eleva_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="retry"
+            android:textAllCaps="false"
+            android:text="Retry" />
+
+    </LinearLayout>
+
+</RelativeLayout>
