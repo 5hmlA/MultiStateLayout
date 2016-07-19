@@ -2,6 +2,7 @@ package jonas.multitstatelayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import static jonas.multitstatelayout.MultiStateLayout.LayoutState.STATE_EMPTY;
 import static jonas.multitstatelayout.MultiStateLayout.LayoutState.STATE_ERROR;
@@ -30,6 +32,8 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
 
     private OnStateClickListener mL;
     private PointF mDown;
+    private PointF mCenter;
+    private RevealHelper mRevealHelper;
 
     @IntDef({STATE_UNMODIFY, STATE_LOADING, STATE_ERROR, STATE_EMPTY, STATE_EXCEPT})
     public @interface LayoutState {
@@ -103,6 +107,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         super.onFinishInflate();
         mContext = getContext();
         setGravity(Gravity.CENTER);
+        setClickable(true);
     }
 
     @Override
@@ -112,11 +117,16 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh){
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
+        mCenter = new PointF(w / 2f, h / 2f);
+        mRevealHelper = RevealHelper.create(w, h, this);
     }
 
     public MultiStateLayout showStateLayout(@LayoutState int state){
+        if (mLayoutState == state) {
+            return this;
+        }
         mLayoutState = state;
         if(mLayoutState == STATE_UNMODIFY || mLayoutState == STATE_LOADING) {
             goneOthers(mErrorLayout);
@@ -152,6 +162,13 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             goneOthers(mEmptyLayout);
             if(mExceptLayout != null) {
                 bringChildToFront(mExceptLayout);
+            }
+        }
+        if (mRevealHelper != null) {
+            if (mLayoutState != STATE_LOADING) {
+                mRevealHelper.expandRevealAni(mCenter.x, mCenter.y);
+            } else {
+                mRevealHelper.cutRevealAni(mCenter.x, mCenter.y);
             }
         }
         return this;
@@ -296,5 +313,12 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     public MultiStateLayout setOnStateClickListener(OnStateClickListener l){
         mL = l;
         return this;
+    }
+    @Override
+    protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
+        if (child instanceof TextView) {
+            mRevealHelper.clipReveal(canvas);
+        }
+        return super.drawChild(canvas, child, drawingTime);
     }
 }
