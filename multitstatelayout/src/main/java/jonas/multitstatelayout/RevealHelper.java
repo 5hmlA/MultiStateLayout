@@ -35,7 +35,7 @@ public class RevealHelper {
         mView = view;
         mCenter = new PointF(w / 2f, h / 2f);
         mPath = new Path();
-        mPath.addCircle(mCenter.x, mCenter.y, 100, Path.Direction.CW);
+        mPath.addCircle(mCenter.x, mCenter.y, mMinRadius, Path.Direction.CW);
     }
 
     public static RevealHelper create(float w, float h, View view) {
@@ -113,7 +113,16 @@ public class RevealHelper {
         mOa.start();
     }
 
+    public float getMinRadius(){
+        return mMinRadius;
+    }
 
+    public RevealHelper setMinRadius(float minRadius){
+        mMinRadius = minRadius;
+        mPath.reset();
+        mPath.addCircle(mCenter.x, mCenter.y, mRadius, Path.Direction.CW);
+        return this;
+    }
 }
 //AccelerateDecelerateInterpolator （效果）加速减速插补器（先慢后快再慢）
 //

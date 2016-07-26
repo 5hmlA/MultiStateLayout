@@ -24,12 +24,14 @@ public class ScrollingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_scrolling);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        mMsl = (MultiStateLayout) findViewById(R.id.msl);
+        mMsl = ((MultiStateLayout) findViewById(R.id.msl)).setLoadingCancelAble(true).showStateLayout(
+                MultiStateLayout.LayoutState.STATE_LOADING).setRevealable(true);
 //        mMsl.CustomStateLayout(R.layout.cust_loading2, MultiStateLayout.LayoutState.STATE_EMPTY);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setCustom();
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -40,6 +42,9 @@ public class ScrollingActivity extends AppCompatActivity {
                 mMsl.showStateLayout(MultiStateLayout.LayoutState.STATE_EXCEPT);
             }
         }, 2000);
+    }
+
+    private void setCustom(){
         TextView textView = new TextView(this);
         textView.setTextSize(39);
         textView.setText("jiaz 成功");

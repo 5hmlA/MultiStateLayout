@@ -8,12 +8,11 @@ import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Gravity;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import static jonas.multitstatelayout.MultiStateLayout.LayoutState.STATE_EMPTY;
 import static jonas.multitstatelayout.MultiStateLayout.LayoutState.STATE_ERROR;
@@ -56,6 +55,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     private View mErrorLayout;
     private View mExceptLayout;
     private boolean mLoadingCancel;
+    private boolean mRevealable;
 
     @Override
     public void onClick(View v){
@@ -106,68 +106,77 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     protected void onFinishInflate(){
         super.onFinishInflate();
         mContext = getContext();
-        setGravity(Gravity.CENTER);
+        //        createLoadingLayout();
         setClickable(true);
     }
 
     @Override
     protected void onAttachedToWindow(){
         super.onAttachedToWindow();
-        showStateLayout(mLayoutState);
+        showStateLayout2(mLayoutState);
     }
 
     @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+    protected void onSizeChanged(int w, int h, int oldw, int oldh){
         super.onSizeChanged(w, h, oldw, oldh);
-        mCenter = new PointF(w / 2f, h / 2f);
-        mRevealHelper = RevealHelper.create(w, h, this);
+        mCenter = new PointF(w/2f, h/2f);
+        mRevealHelper = RevealHelper.create(w, h, this).setMinRadius(dp2px(40));
     }
 
-    public MultiStateLayout showStateLayout(@LayoutState int state){
-        if (mLayoutState == state) {
-            return this;
+    public MultiStateLayout showStateLayout(@LayoutState int state) {
+        if (mLayoutState != state) {
+            showStateLayout2(state);
         }
+        return this;
+    }
+
+    private MultiStateLayout showStateLayout2(@LayoutState int state) {
         mLayoutState = state;
-        if(mLayoutState == STATE_UNMODIFY || mLayoutState == STATE_LOADING) {
+        if (mLayoutState == STATE_LOADING) {
             goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
             if(mLoadingLayout == null) {
                 createLoadingLayout();
-                mLoadingLayout.setOnClickListener(this);
             }else {
-                bringChildToFront(mLoadingLayout);
+                visibleState(mLoadingLayout);
+            }
+            if(mLoadingLayout != null) {
+                mLoadingLayout.setOnClickListener(this);
             }
         }else if(mLayoutState == STATE_EMPTY) {
             goneOthers(mLoadingLayout);
             goneOthers(mErrorLayout);
             if(mEmptyLayout == null) {
                 createEmptyLayout();
-                mEmptyLayout.findViewById(R.id.j_multity_retry).setOnClickListener(this);
+                if(mEmptyLayout != null) {
+                    mEmptyLayout.findViewById(R.id.j_multity_retry).setOnClickListener(this);
+                }
             }else {
-                bringChildToFront(mEmptyLayout);
+                visibleState(mEmptyLayout);
             }
         }else if(mLayoutState == STATE_ERROR) {
             goneOthers(mLoadingLayout);
             goneOthers(mEmptyLayout);
             if(mErrorLayout == null) {
                 createErrorLayout();
-                mErrorLayout.findViewById(R.id.j_multity_retry).setOnClickListener(this);
+                if(mErrorLayout != null) {
+                    mErrorLayout.findViewById(R.id.j_multity_retry).setOnClickListener(this);
+                }
             }else {
-                bringChildToFront(mErrorLayout);
+                visibleState(mErrorLayout);
             }
-        }else {
-            //            if (mLayoutState == STATE_EXCEPT)
+        } else if (mLayoutState == STATE_EXCEPT) {
             goneOthers(mLoadingLayout);
             goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
             if(mExceptLayout != null) {
-                bringChildToFront(mExceptLayout);
+                visibleState(mExceptLayout);
             }
         }
-        if (mRevealHelper != null) {
-            if (mLayoutState != STATE_LOADING) {
+        if(mRevealHelper != null) {
+            if(mLayoutState != STATE_LOADING) {
                 mRevealHelper.expandRevealAni(mCenter.x, mCenter.y);
-            } else {
+            }else {
                 mRevealHelper.cutRevealAni(mCenter.x, mCenter.y);
             }
         }
@@ -180,8 +189,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         }
     }
 
-    @Override
-    public void bringChildToFront(View child){
+    public void visibleState(View child){
         child.setVisibility(VISIBLE);
         //        if (indexOfChild(child) < getChildCount()-1) {
         //            super.bringChildToFront(child);
@@ -300,6 +308,15 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         return this;
     }
 
+    public boolean isRevealable(){
+        return mRevealable;
+    }
+
+    public MultiStateLayout setRevealable(boolean revealable){
+        mRevealable = revealable;
+        return this;
+    }
+
     private View createLayout(int layoutid){
         View inflateView = LayoutInflater.from(mContext).inflate(layoutid, this, false);
         ViewGroup.LayoutParams layoutParams = inflateView.getLayoutParams();
@@ -314,11 +331,20 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         mL = l;
         return this;
     }
+
     @Override
-    protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
-        if (child instanceof TextView) {
+    protected boolean drawChild(Canvas canvas, View child, long drawingTime){
+        if(mRevealHelper != null && mRevealable) {
             mRevealHelper.clipReveal(canvas);
         }
         return super.drawChild(canvas, child, drawingTime);
+    }
+
+    private int dp2px(float dpVal){
+        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, getResources().getDisplayMetrics());
+    }
+
+    private int sp2px(float dpVal){
+        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, dpVal, getResources().getDisplayMetrics());
     }
 }

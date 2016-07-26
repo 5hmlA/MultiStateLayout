@@ -29,7 +29,8 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#f0f0"
             android:layout_margin="@dimen/text_margin"
             android:text="@string/large_text2"/>
     </jonas.multitstatelayout.MultiStateLayout>
