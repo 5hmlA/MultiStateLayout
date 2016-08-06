@@ -4,6 +4,7 @@ import android.animation.ObjectAnimator;
 import android.graphics.Canvas;
 import android.graphics.Path;
 import android.graphics.PointF;
+import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
@@ -29,84 +30,92 @@ public class RevealHelper {
     private ObjectAnimator mOa = ObjectAnimator.ofFloat(this, "radius", 100, mW);
     private long durationani = 300;
 
-    private RevealHelper(float w, float h, View view) {
+    private RevealHelper(float w, float h, View view){
         mW = w;
         mH = h;
         mView = view;
-        mCenter = new PointF(w / 2f, h / 2f);
+        mCenter = new PointF(w/2f, h/2f);
         mPath = new Path();
         mPath.addCircle(mCenter.x, mCenter.y, mMinRadius, Path.Direction.CW);
     }
 
-    public static RevealHelper create(float w, float h, View view) {
+    public static RevealHelper create(float w, float h, View view){
         return new RevealHelper(w, h, view);
     }
+    public static RevealHelper create(View view){
+        return new RevealHelper(0, 0, view);
+    }
 
-    public void clipReveal(Canvas canvas) {
+    public void clipReveal(Canvas canvas){
         canvas.clipPath(mPath);
     }
 
-    private float getRadius() {
+    private float getRadius(){
         return mRadius;
     }
 
-    private void setRadius(float radius) {
+    private void setRadius(float radius){
         mRadius = radius;
         mPath.reset();
         mPath.addCircle(mCenter.x, mCenter.y, mRadius, Path.Direction.CW);
         mView.invalidate();
     }
 
-    public void touchEvent(MotionEvent ev) {
-        if (mOa.isRunning()) {
+    public void touchEvent(MotionEvent ev){
+        if(mOa.isRunning()) {
             mOa.cancel();
         }
         mPath.reset();
         mCenter.x = ev.getX();
         mCenter.y = ev.getY();
-        if (ev.getAction() == MotionEvent.ACTION_UP) {
+        if(ev.getAction() == MotionEvent.ACTION_UP) {
             mPath.addCircle(mCenter.x, mCenter.y, mMinRadius, Path.Direction.CW);
             startAnimation(mCenter.x, mCenter.y);
-        } else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+        }else if(ev.getAction() == MotionEvent.ACTION_MOVE) {
             mPath.addCircle(mCenter.x, mCenter.y, mMinRadius, Path.Direction.CW);
         }
         mView.invalidate();
     }
 
-    private float getLonsgRadius(float x, float y) {
-        if (y > mH / 2f) {
+    private float getLonsgRadius(float x, float y){
+        if(y>mH/2f) {
             //上部分
-            if (x > mW / 2f) {
-                return (float) getPointLength(x, y, 0, 0);
-            } else {
-                return (float) getPointLength(x, y, mW, 0);
+            if(x>mW/2f) {
+                return (float)getPointLength(x, y, 0, 0);
+            }else {
+                return (float)getPointLength(x, y, mW, 0);
             }
-        } else {
-            if (x > mW / 2f) {
-                return (float) getPointLength(x, y, 0, mH);
-            } else {
-                return (float) getPointLength(x, y, mW, mH);
+        }else {
+            if(x>mW/2f) {
+                return (float)getPointLength(x, y, 0, mH);
+            }else {
+                return (float)getPointLength(x, y, mW, mH);
             }
         }
     }
 
-    private double getPointLength(float x1, float y1, float x2, float y2) {
-        return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow((y1 - y2), 2));
+    private double getPointLength(float x1, float y1, float x2, float y2){
+        return Math.sqrt(Math.pow(x1-x2, 2)+Math.pow(( y1-y2 ), 2));
     }
 
-    private void startAnimation(float x, float y) {
+    private void startAnimation(float x, float y){
         mOa.setFloatValues(mMinRadius, getLonsgRadius(x, y));
         mOa.setDuration(durationani);
         mOa.start();
     }
 
     public void cutRevealAni(float x, float y){
-        mOa.setFloatValues(getLonsgRadius(x, y),mMinRadius);
+        mCenter.x = x;
+        mCenter.y = y;
+        mOa.setFloatValues(getLonsgRadius(x, y), mMinRadius);
         mOa.setInterpolator(new BounceInterpolator());
         mOa.setDuration(durationani);
         mOa.start();
     }
+
     public void expandRevealAni(float x, float y){
+        mCenter.x = x;
+        mCenter.y = y;
         mOa.setFloatValues(mMinRadius, getLonsgRadius(x, y));
         mOa.setInterpolator(new AccelerateInterpolator());
         mOa.setDuration(durationani);
@@ -123,6 +132,20 @@ public class RevealHelper {
         mPath.addCircle(mCenter.x, mCenter.y, mMinRadius, Path.Direction.CW);
         mView.postInvalidate();
         return this;
+    }
+    public RevealHelper setAniDuration(long duration){
+        durationani = duration;
+        return this;
+    }
+
+    public int dp2px(float dpVal){
+        return (int)TypedValue
+                .applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, mView.getResources().getDisplayMetrics());
+    }
+
+    public int sp2px(float dpVal){
+        return (int)TypedValue
+                .applyDimension(TypedValue.COMPLEX_UNIT_SP, dpVal, mView.getResources().getDisplayMetrics());
     }
 }
 //AccelerateDecelerateInterpolator （效果）加速减速插补器（先慢后快再慢）

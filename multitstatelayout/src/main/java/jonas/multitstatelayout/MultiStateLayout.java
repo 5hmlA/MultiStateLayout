@@ -100,14 +100,13 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
 
     public MultiStateLayout(Context context, AttributeSet attrs, int defStyleAttr){
         super(context, attrs, defStyleAttr);
-        System.out.println(".................");
     }
 
     @Override
     protected void onFinishInflate(){
         super.onFinishInflate();
         mContext = getContext();
-        setClickable(true);
+        //        setClickable(true);
         showStateLayout2(mLayoutState);
     }
 
@@ -118,16 +117,16 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         mRevealHelper = RevealHelper.create(w, h, this).setMinRadius(dp2px(40));
     }
 
-    public MultiStateLayout showStateLayout(@LayoutState int state) {
-        if (mLayoutState != state) {
+    public MultiStateLayout showStateLayout(@LayoutState int state){
+        if(mLayoutState != state) {
             showStateLayout2(state);
         }
         return this;
     }
 
-    private MultiStateLayout showStateLayout2(@LayoutState int state) {
+    private MultiStateLayout showStateLayout2(@LayoutState int state){
         mLayoutState = state;
-        if (mLayoutState == STATE_LOADING) {
+        if(mLayoutState == STATE_LOADING) {
             goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
             if(mLoadingLayout == null) {
@@ -160,7 +159,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }else {
                 visibleState(mErrorLayout);
             }
-        } else if (mLayoutState == STATE_EXCEPT) {
+        }else if(mLayoutState == STATE_EXCEPT) {
             goneOthers(mLoadingLayout);
             goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
@@ -318,6 +317,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         if(!( layoutParams instanceof RelativeLayout.LayoutParams )) {
             layoutParams = new RelativeLayout.LayoutParams(-1, -1);
         }
+        inflateView.setClickable(true);
         addView(inflateView, layoutParams);
         return inflateView;
     }
