@@ -78,6 +78,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     }
 
     private void logdOut(String slog){
+        //lib debug alaways false
         if(BuildConfig.DEBUG) {
             Log.d(TAG, slog);
         }
@@ -99,20 +100,14 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
 
     public MultiStateLayout(Context context, AttributeSet attrs, int defStyleAttr){
         super(context, attrs, defStyleAttr);
-
+        System.out.println(".................");
     }
 
     @Override
     protected void onFinishInflate(){
         super.onFinishInflate();
         mContext = getContext();
-        //        createLoadingLayout();
         setClickable(true);
-    }
-
-    @Override
-    protected void onAttachedToWindow(){
-        super.onAttachedToWindow();
         showStateLayout2(mLayoutState);
     }
 
@@ -333,11 +328,11 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     }
 
     @Override
-    protected boolean drawChild(Canvas canvas, View child, long drawingTime){
+    protected void dispatchDraw(Canvas canvas){
         if(mRevealHelper != null && mRevealable) {
             mRevealHelper.clipReveal(canvas);
         }
-        return super.drawChild(canvas, child, drawingTime);
+        super.dispatchDraw(canvas);
     }
 
     private int dp2px(float dpVal){

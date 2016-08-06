@@ -21,7 +21,7 @@ public class RevealHelper {
 
     private PointF mCenter;
     private float mRadius;
-    private float mMinRadius = 100;
+    private float mMinRadius = 80;
     private Path mPath;
     private float mW;
     private float mH;
@@ -120,7 +120,8 @@ public class RevealHelper {
     public RevealHelper setMinRadius(float minRadius){
         mMinRadius = minRadius;
         mPath.reset();
-        mPath.addCircle(mCenter.x, mCenter.y, mRadius, Path.Direction.CW);
+        mPath.addCircle(mCenter.x, mCenter.y, mMinRadius, Path.Direction.CW);
+        mView.postInvalidate();
         return this;
     }
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import jonas.multitstatelayout.MultiStateLayout;
+import jonas.multitstatelayout.OnStateClickListener;
 
 public class ScrollingActivity extends AppCompatActivity {
 
@@ -41,7 +42,24 @@ public class ScrollingActivity extends AppCompatActivity {
             public void run() {
                 mMsl.showStateLayout(MultiStateLayout.LayoutState.STATE_EXCEPT);
             }
-        }, 2000);
+        }, 3000);
+
+        mMsl.setOnStateClickListener(new OnStateClickListener() {
+            @Override
+            public void onRetry(@MultiStateLayout.LayoutState int layoutState){
+                mMsl.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mMsl.showStateLayout(MultiStateLayout.LayoutState.STATE_ERROR);
+                    }
+                }, 3000);
+            }
+
+            @Override
+            public void onLoadingCancel(){
+
+            }
+        });
     }
 
     private void setCustom(){
