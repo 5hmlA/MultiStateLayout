@@ -1,4 +1,4 @@
-package jonas.multitstatelayout;
+package jonas.jlayout;
 
 import android.animation.ObjectAnimator;
 import android.graphics.Canvas;

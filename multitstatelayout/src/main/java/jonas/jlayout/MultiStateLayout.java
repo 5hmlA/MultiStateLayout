@@ -1,4 +1,4 @@
-package jonas.multitstatelayout;
+package jonas.jlayout;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -14,11 +14,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import static jonas.multitstatelayout.MultiStateLayout.LayoutState.STATE_EMPTY;
-import static jonas.multitstatelayout.MultiStateLayout.LayoutState.STATE_ERROR;
-import static jonas.multitstatelayout.MultiStateLayout.LayoutState.STATE_EXCEPT;
-import static jonas.multitstatelayout.MultiStateLayout.LayoutState.STATE_LOADING;
-import static jonas.multitstatelayout.MultiStateLayout.LayoutState.STATE_UNMODIFY;
+import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_EMPTY;
+import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_ERROR;
+import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_EXCEPT;
+import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_LOADING;
+import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_UNMODIFY;
 
 /**
  * @author yun.

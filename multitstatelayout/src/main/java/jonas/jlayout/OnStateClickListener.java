@@ -1,4 +1,4 @@
-package jonas.multitstatelayout;
+package jonas.jlayout;
 
 /**
  * @author yun.

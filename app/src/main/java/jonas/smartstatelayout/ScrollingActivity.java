@@ -12,9 +12,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import jonas.multitstatelayout.MultiStateLayout;
-import jonas.multitstatelayout.OnStateClickListener;
-import jonas.multitstatelayout.revealLayout.JRelativelayout;
+import jonas.jlayout.MultiStateLayout;
+import jonas.jlayout.OnStateClickListener;
+import jonas.jlayout.revealLayout.JRelativelayout;
 
 public class ScrollingActivity extends AppCompatActivity {
 

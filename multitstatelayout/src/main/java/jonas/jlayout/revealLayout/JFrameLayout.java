@@ -1,13 +1,13 @@
-package jonas.multitstatelayout.revealLayout;
+package jonas.jlayout.revealLayout;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
-import jonas.multitstatelayout.RevealHelper;
+import jonas.jlayout.RevealHelper;
 
 /**
  * @author yun.
@@ -16,20 +16,20 @@ import jonas.multitstatelayout.RevealHelper;
  * @since [https://github.com/mychoices]
  * <p><a href="https://github.com/mychoices">github</a>
  */
-public class JRelativelayout extends RelativeLayout {
+public class JFrameLayout extends FrameLayout {
     private static final long ANITIME = 300;
     private RevealHelper mRevealHelper;
     private PointF mRevPoint;
 
-    public JRelativelayout(Context context){
+    public JFrameLayout(Context context){
         super(context);
     }
 
-    public JRelativelayout(Context context, AttributeSet attrs){
+    public JFrameLayout(Context context, AttributeSet attrs){
         super(context, attrs);
     }
 
-    public JRelativelayout(Context context, AttributeSet attrs, int defStyleAttr){
+    public JFrameLayout(Context context, AttributeSet attrs, int defStyleAttr){
         super(context, attrs, defStyleAttr);
     }
 
@@ -78,14 +78,14 @@ public class JRelativelayout extends RelativeLayout {
         }
     }
 
-    public JRelativelayout setRealVisibility(int visibility, float x, float y){
+    public JFrameLayout setRealVisibility(int visibility, float x, float y){
         mRevPoint.x = x;
         mRevPoint.y = y;
         setRealVisibility(visibility);
         return this;
     }
 
-    public JRelativelayout setRealVisibility(int visibility, PointF revPoint){
+    public JFrameLayout setRealVisibility(int visibility, PointF revPoint){
         mRevPoint = revPoint;
         setRealVisibility(visibility);
         return this;

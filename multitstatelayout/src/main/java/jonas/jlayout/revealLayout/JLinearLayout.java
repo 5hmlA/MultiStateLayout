@@ -1,4 +1,4 @@
-package jonas.multitstatelayout.revealLayout;
+package jonas.jlayout.revealLayout;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -7,7 +7,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
 
-import jonas.multitstatelayout.RevealHelper;
+import jonas.jlayout.RevealHelper;
 
 /**
  * @author yun.
