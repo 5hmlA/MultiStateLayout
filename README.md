@@ -12,7 +12,7 @@ allprojects {
 	}
 	
 dependencies {
-	 compile 'com.github.mychoices:MultiStateLayout:v1.1'
+	 compile 'com.github.mychoices:MultiStateLayout:v1.3'
 }
 ```
 ![](https://raw.githubusercontent.com/mychoices/MultiStateLayout/master/001.gif)
