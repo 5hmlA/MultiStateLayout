@@ -122,6 +122,10 @@ public class RevealHelper {
         mOa.start();
     }
 
+    public boolean isRevealRunning(){
+        return mOa.isRunning();
+    }
+
     public float getMinRadius(){
         return mMinRadius;
     }

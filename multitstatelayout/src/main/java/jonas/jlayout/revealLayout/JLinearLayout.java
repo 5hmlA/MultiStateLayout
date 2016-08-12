@@ -60,6 +60,9 @@ public class JLinearLayout extends LinearLayout {
     }
 
     public void setRealVisibility(final int visibility){
+        if(mRevealHelper.isRevealRunning()) {
+            return;
+        }
         if(mRevealHelper != null && mRevPoint != null) {
             if(visibility == VISIBLE) {
                 mRevealHelper.expandRevealAni(mRevPoint.x, mRevPoint.y);
