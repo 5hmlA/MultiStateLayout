@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="jmultistate" format="reference"/>
+
+    <style name="Jmultistate">
+    </style>
+    <style name="Jmultistate.style">
+        <item name="error">@layout/j_multitylayout_error</item>
+        <item name="loading">@layout/j_multitylayout_loading</item>
+        <item name="empty">@layout/j_multitylayout_empty</item>
+        <item name="state">loading</item>
+    </style>
     <declare-styleable name="MultiStateLayout">
         <attr name="error" format="reference"/>
         <attr name="loading" format="reference"/>

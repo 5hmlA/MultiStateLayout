@@ -11,7 +11,7 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:buttonStyle">@style/defauleTextStyle</item>
-        <item name="state">loading</item>
+        <item name="jmultistate">@style/multistate</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -22,6 +22,12 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light"/>
-
+        <!--<item name="loading">@layout/j_multitylayout_loading</item>-->
+    <style name="multistate" parent="Jmultistate.style">
+        <item name="error">@layout/j_multitylayout_error</item>
+        <item name="loading">@layout/cust_loading2</item>
+        <item name="empty">@layout/j_multitylayout_empty</item>
+        <item name="state">loading</item>
+    </style>
 
 </resources>
