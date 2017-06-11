@@ -29,7 +29,7 @@ public class ScrollingActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mMsl = ( (MultiStateLayout)findViewById(R.id.msl) ).setLoadingCancelAble(true)
-                .showStateLayout(MultiStateLayout.LayoutState.STATE_LOADING).setRevealable(true);
+                .showStateLayout(MultiStateLayout.LayoutState.STATE_LOADING).setRevealable(false);
         //        mMsl.CustomStateLayout(R.layout.cust_loading2, MultiStateLayout.LayoutState.STATE_EMPTY);
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {

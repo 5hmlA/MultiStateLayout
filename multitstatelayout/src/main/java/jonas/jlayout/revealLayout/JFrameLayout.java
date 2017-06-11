@@ -38,7 +38,7 @@ public class JFrameLayout extends FrameLayout {
         //gone 不调用
         super.onSizeChanged(w, h, oldw, oldh);
         mRevealHelper = RevealHelper.create(w, h, this);
-        mRevealHelper.setMinRadius(mRevealHelper.dp2px(10)).setAniDuration(ANITIME);
+        mRevealHelper.setMinRadius(mRevealHelper.dp2px(1)).setAniDuration(ANITIME);
         mRevPoint = new PointF(w/2f, h/2f);
     }
 

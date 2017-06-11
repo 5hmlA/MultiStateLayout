@@ -16,6 +16,7 @@
 
     <jonas.jlayout.MultiStateLayout
         android:id="@+id/msl"
+        android:animateLayoutChanges="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 

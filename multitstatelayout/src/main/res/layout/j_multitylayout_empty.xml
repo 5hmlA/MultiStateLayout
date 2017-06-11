@@ -13,6 +13,7 @@
                   android:orientation="vertical"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
+                  android:layoutAnimation="@anim/scalecenter"
                   android:layout_gravity="center"
                   android:elevation="@dimen/j_eleva_top"
                   android:gravity="center_horizontal">

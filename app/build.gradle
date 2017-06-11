@@ -1,14 +1,16 @@
 apply plugin: 'com.android.application'
+apply from: 'https://raw.githubusercontent.com/ZuYun/workspace/master/config.gradle'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "25.0.2"
+    compileSdkVersion config.compileSdkVersion
+    buildToolsVersion config.buildToolsVersion
+
     defaultConfig {
+        minSdkVersion config.minSdkVersion
+        targetSdkVersion config.targetSdkVersion
+        versionCode config.versionCode
+        versionName config.versionName
         applicationId "jonas.smartstatelayout"
-        minSdkVersion 16
-        targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
     }
     buildTypes {
         release {
@@ -23,9 +25,8 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:design:25.2.0'
     testCompile 'junit:junit:4.12'
-//    compile 'com.github.mychoices:MultiStateLayout:v1.0'
+    compile 'com.github.mychoices:MultiStateLayout:v1.0'
     compile project(':multitstatelayout')
 }

@@ -138,8 +138,6 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     private MultiStateLayout showStateLayout2(@LayoutState int state){
         mLayoutState = state;
         if(mLayoutState == STATE_LOADING) {
-            goneOthers(mErrorLayout);
-            goneOthers(mEmptyLayout);
             if(mLoadingLayout == null) {
                 createLoadingLayout();
             }else {
@@ -148,9 +146,9 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             if(mLoadingLayout != null) {
                 mLoadingLayout.setOnClickListener(this);
             }
-        }else if(mLayoutState == STATE_EMPTY) {
-            goneOthers(mLoadingLayout);
             goneOthers(mErrorLayout);
+            goneOthers(mEmptyLayout);
+        }else if(mLayoutState == STATE_EMPTY) {
             if(mEmptyLayout == null) {
                 createEmptyLayout();
                 if(mEmptyLayout != null) {
@@ -161,9 +159,9 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }else {
                 visibleState(mEmptyLayout);
             }
-        }else if(mLayoutState == STATE_ERROR) {
             goneOthers(mLoadingLayout);
-            goneOthers(mEmptyLayout);
+            goneOthers(mErrorLayout);
+        }else if(mLayoutState == STATE_ERROR) {
             if(mErrorLayout == null) {
                 createErrorLayout();
                 if(mErrorLayout != null) {
@@ -174,13 +172,15 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }else {
                 visibleState(mErrorLayout);
             }
-        }else if(mLayoutState == STATE_EXCEPT) {
             goneOthers(mLoadingLayout);
-            goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
+        }else if(mLayoutState == STATE_EXCEPT) {
             if(mExceptLayout != null) {
                 visibleState(mExceptLayout);
             }
+            goneOthers(mLoadingLayout);
+            goneOthers(mErrorLayout);
+            goneOthers(mEmptyLayout);
         }
         if(mRevealHelper != null) {
             if(mLayoutState != STATE_LOADING) {

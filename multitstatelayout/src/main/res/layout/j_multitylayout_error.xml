@@ -4,6 +4,7 @@
                 android:layout_height="match_parent"
                 android:background="#ff00"
                 android:elevation="@dimen/j_eleva_top"
+                android:animateLayoutChanges="true"
                 android:clickable="true"
                 android:gravity="center"
                 android:foreground="?attr/selectableItemBackground">
@@ -13,6 +14,7 @@
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_gravity="center"
+                  android:layoutAnimation="@anim/scalecenter"
                   android:elevation="@dimen/j_eleva_top"
                   android:gravity="center_horizontal">
 

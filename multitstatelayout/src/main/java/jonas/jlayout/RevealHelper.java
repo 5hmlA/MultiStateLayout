@@ -8,7 +8,7 @@ import android.util.TypedValue;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.BounceInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 /**
  * @author jiangzuyun.
@@ -108,7 +108,7 @@ public class RevealHelper {
         mCenter.x = x;
         mCenter.y = y;
         mOa.setFloatValues(getLonsgRadius(x, y), mMinRadius);
-        mOa.setInterpolator(new BounceInterpolator());
+        mOa.setInterpolator(new DecelerateInterpolator());
         mOa.setDuration(durationani);
         mOa.start();
     }

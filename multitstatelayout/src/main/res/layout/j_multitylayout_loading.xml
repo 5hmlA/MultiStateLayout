@@ -3,7 +3,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
-                android:background="#fcfcfc"
+                android:background="#da6533"
+                android:layoutAnimation="@anim/scalecenter"
                 android:foreground="?attr/selectableItemBackground">
 
     <ProgressBar
