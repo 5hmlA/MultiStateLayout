@@ -1,7 +1,6 @@
 package jonas.smartstatelayout;
 
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -20,7 +19,6 @@ public class ScrollingActivity extends AppCompatActivity {
 
     private MultiStateLayout mMsl;
     private JRelativelayout mJRelativelayout;
-    private PointF mRevPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -65,7 +63,7 @@ public class ScrollingActivity extends AppCompatActivity {
         });
 
         mJRelativelayout = (JRelativelayout)findViewById(R.id.jrl);
-        mRevPoint = new PointF(0, 0);
+        mJRelativelayout.setAlpha(0);
     }
 
     private void setCustom(){

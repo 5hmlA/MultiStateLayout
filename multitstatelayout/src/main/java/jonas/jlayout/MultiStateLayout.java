@@ -7,7 +7,6 @@ import android.graphics.PointF;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,14 +60,12 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     public void onClick(View v){
         int id = v.getId();
         if(id == R.id.j_multity_retry) {
-            logdOut("onClick reloading");
             showStateLayout(STATE_LOADING);
             if(mL != null) {
                 mL.onRetry(mLayoutState);
             }
         }else {
             if(mLoadingCancel) {
-                logdOut("onClick cancel loading");
                 showStateLayout(STATE_EXCEPT);
                 if(mL != null) {
                     mL.onLoadingCancel();
@@ -77,26 +74,12 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         }
     }
 
-    private void logdOut(String slog){
-        //lib debug alaways false
-        if(BuildConfig.DEBUG) {
-            Log.d(TAG, slog);
-        }
-    }
-
     public MultiStateLayout(Context context){
-        super(context,null);
+        super(context, null);
     }
 
     public MultiStateLayout(Context context, AttributeSet attrs){
-//        super(context, attrs);
-//        ProgressBar
-//        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MultiStateLayout);
-//        layout_error_resid = a.getResourceId(R.styleable.MultiStateLayout_error, R.layout.j_multitylayout_error);
-//        layout_empty_resid = a.getResourceId(R.styleable.MultiStateLayout_empty, R.layout.j_multitylayout_empty);
-//        layout_loading_resid = a.getResourceId(R.styleable.MultiStateLayout_loading, R.layout.j_multitylayout_loading);
-//        a.recycle();
-        this(context, attrs,R.attr.jmultistate);
+        this(context, attrs, R.attr.jmultistate);
     }
 
     public MultiStateLayout(Context context, AttributeSet attrs, int defStyleAttr){
@@ -148,6 +131,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }
             goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
+            //            bringChildToFront(mLoadingLayout);
         }else if(mLayoutState == STATE_EMPTY) {
             if(mEmptyLayout == null) {
                 createEmptyLayout();
@@ -161,6 +145,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }
             goneOthers(mLoadingLayout);
             goneOthers(mErrorLayout);
+            //            bringChildToFront(mEmptyLayout);
         }else if(mLayoutState == STATE_ERROR) {
             if(mErrorLayout == null) {
                 createErrorLayout();
@@ -174,6 +159,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }
             goneOthers(mLoadingLayout);
             goneOthers(mEmptyLayout);
+            //            bringChildToFront(mErrorLayout);
         }else if(mLayoutState == STATE_EXCEPT) {
             if(mExceptLayout != null) {
                 visibleState(mExceptLayout);
@@ -356,5 +342,29 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
 
     private int sp2px(float dpVal){
         return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, dpVal, getResources().getDisplayMetrics());
+    }
+
+    public void showStateSucceed(){
+        showStateLayout(MultiStateLayout.LayoutState.STATE_EXCEPT);
+    }
+
+    public void showStateLoading(){
+        showStateLayout(MultiStateLayout.LayoutState.STATE_LOADING);
+    }
+
+    public void showStateEmpty(){
+        showStateLayout(MultiStateLayout.LayoutState.STATE_EMPTY);
+    }
+
+    public View getLoadingLayout(){
+        return mLoadingLayout;
+    }
+
+    public View getErrorLayout(){
+        return mErrorLayout;
+    }
+
+    public View getEmptyLayout(){
+        return mEmptyLayout;
     }
 }

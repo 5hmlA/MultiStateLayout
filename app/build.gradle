@@ -18,15 +18,11 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:design:25.2.0'
     testCompile 'junit:junit:4.12'
-    compile 'com.github.mychoices:MultiStateLayout:v1.0'
     compile project(':multitstatelayout')
 }

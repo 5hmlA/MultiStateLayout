@@ -2,37 +2,37 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#f0f"
                 android:clickable="true"
+                android:background="#fff"
                 android:elevation="@dimen/j_eleva_top"
-                android:gravity="center"
-                android:foreground="?attr/selectableItemBackground">
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center">
 
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="vertical"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
-                  android:layoutAnimation="@anim/scalecenter"
                   android:layout_gravity="center"
                   android:elevation="@dimen/j_eleva_top"
-                  android:gravity="center_horizontal">
+                  android:gravity="center_horizontal"
+                  android:layoutAnimation="@anim/layaniscalecenter"
+                  android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:elevation="@dimen/j_eleva_top"
-            android:text="@string/j_multitylayout_empty" />
+            android:text="@string/j_multitylayout_empty"/>
 
         <Button
             android:id="@+id/j_multity_retry"
             style="?android:borderlessButtonStyle"
-            android:elevation="@dimen/j_eleva_top"
-            android:onClick="retry"
-            android:textAllCaps="false"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Retry" />
+            android:elevation="@dimen/j_eleva_top"
+            android:onClick="retry"
+            android:text="Retry"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 </RelativeLayout>
