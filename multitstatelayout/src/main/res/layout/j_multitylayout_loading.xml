@@ -3,7 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clickable="true"
-                android:background="#adfcfbfb"
+                android:background="#c6fcfbfb"
                 android:layoutAnimation="@anim/layaniscalecenter"
                 android:foreground="?attr/selectableItemBackground">
 

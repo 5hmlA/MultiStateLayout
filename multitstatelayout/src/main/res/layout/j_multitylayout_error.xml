@@ -2,37 +2,43 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:elevation="@dimen/j_eleva_top"
-                android:background="#fff"
                 android:animateLayoutChanges="true"
+                android:background="#fff"
                 android:clickable="true"
-                android:gravity="center"
-                android:foreground="?attr/selectableItemBackground">
+                android:elevation="@dimen/j_eleva_top"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                  android:orientation="vertical"
                   android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:layout_gravity="center"
-                  android:layoutAnimation="@anim/layaniscalecenter"
                   android:elevation="@dimen/j_eleva_top"
-                  android:gravity="center_horizontal">
+                  android:gravity="center_horizontal"
+                  android:layoutAnimation="@anim/layaniscalecenter"
+                  android:orientation="vertical">
 
         <TextView
+            android:id="@+id/j_multity_error_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/ic_state_layout_error"
             android:elevation="@dimen/j_eleva_top"
-            android:text="Whoops! Something went wrong" />
+            android:text="Whoops! Something went wrong"
+            android:textColor="#33475F"/>
 
         <Button
             android:id="@+id/j_multity_retry"
-            style="?android:borderlessButtonStyle"
-            android:elevation="@dimen/j_eleva_top"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/j_eleva_top"
+            android:elevation="@dimen/j_eleva_top"
+            android:foreground="?selectableItemBackgroundBorderless"
             android:onClick="retry"
+            android:text="Retry"
             android:textAllCaps="false"
-            android:text="Retry" />
+            android:textColor="#33475F"/>
 
     </LinearLayout>
 

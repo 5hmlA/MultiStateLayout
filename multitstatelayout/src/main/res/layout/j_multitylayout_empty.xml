@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
                 android:background="#fff"
+                android:clickable="true"
                 android:elevation="@dimen/j_eleva_top"
                 android:foreground="?attr/selectableItemBackground"
                 android:gravity="center">
@@ -19,20 +19,26 @@
                   android:orientation="vertical">
 
         <TextView
+            android:id="@+id/j_multity_empt_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:drawableTop="@mipmap/ic_state_layout_empty"
             android:elevation="@dimen/j_eleva_top"
-            android:text="@string/j_multitylayout_empty"/>
+            android:gravity="center"
+            android:text="@string/j_multitylayout_empty"
+            android:textColor="#33475F"/>
 
         <Button
             android:id="@+id/j_multity_retry"
             style="?android:borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/j_eleva_top"
             android:elevation="@dimen/j_eleva_top"
             android:onClick="retry"
             android:text="Retry"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false"
+            android:textColor="#33475F"/>
 
     </LinearLayout>
 </RelativeLayout>
