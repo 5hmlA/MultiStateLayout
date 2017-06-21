@@ -131,7 +131,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }
             goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
-            //            bringChildToFront(mLoadingLayout);
+            bringChildToFront(mLoadingLayout);
         }else if(mLayoutState == STATE_EMPTY) {
             if(mEmptyLayout == null) {
                 createEmptyLayout();
@@ -145,7 +145,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }
             goneOthers(mLoadingLayout);
             goneOthers(mErrorLayout);
-            //            bringChildToFront(mEmptyLayout);
+            bringChildToFront(mEmptyLayout);
         }else if(mLayoutState == STATE_ERROR) {
             if(mErrorLayout == null) {
                 createErrorLayout();
@@ -159,7 +159,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }
             goneOthers(mLoadingLayout);
             goneOthers(mEmptyLayout);
-            //            bringChildToFront(mErrorLayout);
+            bringChildToFront(mErrorLayout);
         }else if(mLayoutState == STATE_EXCEPT) {
             if(mExceptLayout != null) {
                 visibleState(mExceptLayout);
@@ -354,6 +354,10 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
 
     public void showStateEmpty(){
         showStateLayout(MultiStateLayout.LayoutState.STATE_EMPTY);
+    }
+
+    public void showStateError(){
+        showStateLayout(LayoutState.STATE_ERROR);
     }
 
     public View getLoadingLayout(){
