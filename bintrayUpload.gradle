@@ -2,7 +2,7 @@ apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 //A TabLayout that supports prompt information Library for Android
 // 这个version是区分library版本的，因此当我们需要更新library时记得修改这个version
-version = "1.6.2"
+version = "1.6.5"
 def siteUrl = 'https://github.com/ZuYun/MultiStateLayout'      // 项目的主页
 def gitUrl = 'https://github.com/ZuYun/MultiStateLayout.git'   // Git仓库的url
 group = "com.yun.ospl"   // Maven Group ID for the artifact，一般填你唯一的包名
@@ -26,7 +26,7 @@ install {
                     developer {
                         id 'jonas-j'        //填写的一些基本信息
                         name 'jonas-j'
-                        email 'jonas-j@outlook.com'
+                        email 'jonas.jzy@gmail.com'
                     }
                 }
                 scm {
@@ -53,7 +53,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "JStateLayout"    //发布到JCenter上的项目名字
+        name = "JSLayout"    //发布到JCenter上的项目名字
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]

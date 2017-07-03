@@ -4,7 +4,7 @@
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:background="#c6fcfbfb"
-                android:layoutAnimation="@anim/layaniscalecenter"
+                android:layoutAnimation="@anim/slayaniscalecenter"
                 android:foreground="?attr/selectableItemBackground">
 
     <ProgressBar

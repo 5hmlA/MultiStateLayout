@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/JstateLayout/JstateLayout.iml" filepath="$PROJECT_DIR$/JstateLayout/JstateLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/MultiStateLayout.iml" filepath="$PROJECT_DIR$/MultiStateLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/SmartStateLayout.iml" filepath="$PROJECT_DIR$/SmartStateLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/multitstatelayout/multitstatelayout.iml" filepath="$PROJECT_DIR$/multitstatelayout/multitstatelayout.iml" />
     </modules>
   </component>
 </project>

@@ -101,7 +101,6 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         super.onFinishInflate();
         mContext = getContext();
         //        setClickable(true);
-        showStateLayout2(mLayoutState);
     }
 
     @Override
@@ -370,5 +369,11 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
 
     public View getEmptyLayout(){
         return mEmptyLayout;
+    }
+
+    @Override
+    protected void onAttachedToWindow(){
+        super.onAttachedToWindow();
+        showStateLayout2(mLayoutState);
     }
 }

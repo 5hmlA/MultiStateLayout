@@ -1,0 +1,80 @@
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
+
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+
+def siteUrl = properties.getProperty("bintray.siteUrl")    // 项目的主页
+def gitUrl = properties.getProperty("bintray.gitUrl")   // Git仓库的url
+def desc = properties.getProperty("bintray.desc")   //项目描述
+def devid = properties.getProperty("bintray.devid")   //开发者信息
+def devname = properties.getProperty("bintray.devname")   //开发者信息
+def devemail = properties.getProperty("bintray.devemail")   //开发者信息
+def jprojectName = properties.getProperty("bintray.jprojectName")   //发布到JCenter上的项目名字
+version = properties.getProperty("bintray.version")    // Maven Group ID for the artifact，一般填你唯一的包名
+group = properties.getProperty("bintray.group")    // Maven Group ID for the artifact，一般填你唯一的包名
+
+install {
+    repositories.mavenInstaller {
+        //This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'aar'
+                //添加项目描述
+                name desc
+                url siteUrl
+                //Set your license
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id devid       //填写的一些基本信息
+                        name devname
+                        email devemail
+                    }
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+artifacts {
+    archives sourcesJar
+}
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+    configurations = ['archives']
+    pkg {
+        repo = "maven"  //发布到Bintray的那个仓库里，默认账户有四个库，我们这里上传到maven库
+        name = jprojectName   //发布到JCenter上的项目名字
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = ["Apache-2.0"]
+        publish = true
+    }
+}
+
+//1    第一步是检查代码的正确性，以及编译library文件（aar，pom等等），输入下面的命令：
+//      gradlew install
+
+//2   上传编译的文件到bintray
+//      gradlew bintrayUpload
+
+//3   同步bintray用户仓库到jcenter
+//      把library同步到jcenter非常容易。只需访问网页并点击Add to JCenter 第一个版本的话需要等审核结束就可以了
