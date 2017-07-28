@@ -4,15 +4,9 @@
 
 #Gradle
 ```
-allprojects {
-		repositories {
-			...
-			maven { url "https://jitpack.io" }
-		}
-	}
-	
+
 dependencies {
-	 compile 'com.github.mychoices:MultiStateLayout:v1.3'
+	 compile 'com.yun.ospl:JstateLayout:1.6.6'
 }
 ```
 ![](https://raw.githubusercontent.com/mychoices/MultiStateLayout/master/001.gif)
