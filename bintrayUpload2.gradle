@@ -22,6 +22,7 @@ install {
                 packaging 'aar'
                 //添加项目描述
                 name desc
+                description desc
                 url siteUrl
                 //Set your license
                 licenses {

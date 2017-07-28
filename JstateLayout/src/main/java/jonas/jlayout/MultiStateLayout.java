@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.PointF;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
 import android.util.AttributeSet;
@@ -32,6 +33,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     private PointF mDown;
     private PointF mCenter;
     private RevealHelper mRevealHelper;
+    private int mLoadingClor;
 
     @IntDef({STATE_UNMODIFY, STATE_LOADING, STATE_ERROR, STATE_EMPTY, STATE_EXCEPT})
     public @interface LayoutState {
@@ -100,7 +102,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     protected void onFinishInflate(){
         super.onFinishInflate();
         mContext = getContext();
-        //        setClickable(true);
+        showStateLayout2(mLayoutState);
     }
 
     @Override
@@ -131,6 +133,9 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
             bringChildToFront(mLoadingLayout);
+            if(mLoadingClor != 0) {
+                mLoadingLayout.setBackgroundColor(mLoadingClor);
+            }
         }else if(mLayoutState == STATE_EMPTY) {
             if(mEmptyLayout == null) {
                 createEmptyLayout();
@@ -351,6 +356,11 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         showStateLayout(MultiStateLayout.LayoutState.STATE_LOADING);
     }
 
+    public void showStateLoading(@ColorInt int loadingClor){
+        mLoadingClor = loadingClor;
+        showStateLayout(MultiStateLayout.LayoutState.STATE_LOADING);
+    }
+
     public void showStateEmpty(){
         showStateLayout(MultiStateLayout.LayoutState.STATE_EMPTY);
     }
@@ -371,9 +381,13 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         return mEmptyLayout;
     }
 
-    @Override
-    protected void onAttachedToWindow(){
-        super.onAttachedToWindow();
-        showStateLayout2(mLayoutState);
+    public
+    @LayoutState
+    int getLayoutState(){
+        return mLayoutState;
+    }
+
+    public boolean isShowSucceed(){
+        return mLayoutState == LayoutState.STATE_EXCEPT;
     }
 }
