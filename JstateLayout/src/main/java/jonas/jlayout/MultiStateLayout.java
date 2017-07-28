@@ -14,6 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_EMPTY;
 import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_ERROR;
 import static jonas.jlayout.MultiStateLayout.LayoutState.STATE_EXCEPT;
@@ -35,6 +38,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     private RevealHelper mRevealHelper;
     private int mLoadingClor;
 
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef({STATE_UNMODIFY, STATE_LOADING, STATE_ERROR, STATE_EMPTY, STATE_EXCEPT})
     public @interface LayoutState {
         int STATE_UNMODIFY = -1;
