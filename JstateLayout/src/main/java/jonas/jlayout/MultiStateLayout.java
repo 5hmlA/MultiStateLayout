@@ -106,7 +106,15 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     protected void onFinishInflate(){
         super.onFinishInflate();
         mContext = getContext();
-        showStateLayout2(mLayoutState);
+        if(mLayoutState != STATE_UNMODIFY) {
+            post(new Runnable() {
+                @Override
+                public void run(){
+                    //post 显示loading否则可能出现 loading先显示然后在加载 state布局中except的内容 ,导致loading在最后面看不到
+                    showStateLayout2(mLayoutState);
+                }
+            });
+        }
     }
 
     @Override
@@ -188,15 +196,14 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
 
     private void goneOthers(View view){
         if(view != null) {
-            view.setVisibility(GONE);
+            removeView(view);
+            //view.setVisibility(GONE);
         }
     }
 
     public void visibleState(View child){
-        child.setVisibility(VISIBLE);
-        //        if (indexOfChild(child) < getChildCount()-1) {
-        //            super.bringChildToFront(child);
-        //        }
+        addView(child);
+        //        child.setVisibility(VISIBLE);
     }
 
     private void createErrorLayout(){
