@@ -59,6 +59,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     private View mEmptyLayout;
     private View mErrorLayout;
     private View mExceptLayout;
+    private View mCurrentStateLayout;
     private boolean mLoadingCancel;
     private boolean mRevealable;
 
@@ -107,13 +108,47 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         super.onFinishInflate();
         mContext = getContext();
         if(mLayoutState != STATE_UNMODIFY) {
-            post(new Runnable() {
-                @Override
-                public void run(){
-                    //post 显示loading否则可能出现 loading先显示然后在加载 state布局中except的内容 ,导致loading在最后面看不到
-                    showStateLayout2(mLayoutState);
-                }
-            });
+            showStateLayout2(mLayoutState);
+        }
+    }
+
+    @Override
+    public void addView(View child){
+        super.addView(child);
+        if(mCurrentStateLayout != null) {
+            bringChildToFront(mCurrentStateLayout);
+        }
+    }
+
+    @Override
+    public void addView(View child, ViewGroup.LayoutParams params){
+        super.addView(child, params);
+        if(mCurrentStateLayout != null) {
+            bringChildToFront(mCurrentStateLayout);
+        }
+    }
+
+    @Override
+    public void addView(View child, int width, int height){
+        super.addView(child, width, height);
+        if(mCurrentStateLayout != null) {
+            bringChildToFront(mCurrentStateLayout);
+        }
+    }
+
+    @Override
+    public void addView(View child, int index){
+        super.addView(child, index);
+        if(mCurrentStateLayout != null) {
+            bringChildToFront(mCurrentStateLayout);
+        }
+    }
+
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params){
+        super.addView(child, index, params);
+        if(mCurrentStateLayout != null) {
+            bringChildToFront(mCurrentStateLayout);
         }
     }
 
@@ -131,7 +166,12 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         return this;
     }
 
-    private MultiStateLayout showStateLayout2(@LayoutState int state){
+    @Override
+    protected void onAttachedToWindow(){
+        super.onAttachedToWindow();
+    }
+
+    private synchronized MultiStateLayout showStateLayout2(@LayoutState int state){
         mLayoutState = state;
         if(mLayoutState == STATE_LOADING) {
             if(mLoadingLayout == null) {
@@ -142,9 +182,9 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             if(mLoadingLayout != null) {
                 mLoadingLayout.setOnClickListener(this);
             }
+            mCurrentStateLayout = mLoadingLayout;
             goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
-            bringChildToFront(mLoadingLayout);
             if(mLoadingClor != 0) {
                 mLoadingLayout.setBackgroundColor(mLoadingClor);
             }
@@ -159,9 +199,9 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }else {
                 visibleState(mEmptyLayout);
             }
+            mCurrentStateLayout = mEmptyLayout;
             goneOthers(mLoadingLayout);
             goneOthers(mErrorLayout);
-            bringChildToFront(mEmptyLayout);
         }else if(mLayoutState == STATE_ERROR) {
             if(mErrorLayout == null) {
                 createErrorLayout();
@@ -173,10 +213,11 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }else {
                 visibleState(mErrorLayout);
             }
+            mCurrentStateLayout = mErrorLayout;
             goneOthers(mLoadingLayout);
             goneOthers(mEmptyLayout);
-            bringChildToFront(mErrorLayout);
         }else if(mLayoutState == STATE_EXCEPT) {
+            mCurrentStateLayout = null;
             if(mExceptLayout != null) {
                 visibleState(mExceptLayout);
             }
@@ -197,13 +238,18 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     private void goneOthers(View view){
         if(view != null) {
             removeView(view);
-            //view.setVisibility(GONE);
+//            view.setVisibility(GONE);
         }
     }
 
     public void visibleState(View child){
-        addView(child);
-        //        child.setVisibility(VISIBLE);
+        if(indexOfChild(child)>0) {
+            bringChildToFront(child);
+        }else {
+            addView(child, -1, -1);
+        }
+//            child.setVisibility(VISIBLE);
+//            bringChildToFront(child);
     }
 
     private void createErrorLayout(){
@@ -253,9 +299,8 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }
             mExceptLayout = view;
         }
-        addView(view, -1, -1);
         if(showState) {
-            showStateLayout(state);
+            showStateLayout2(state);
         }
         return this;
     }
@@ -283,34 +328,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
      *         是否立刻显示该状态
      */
     public MultiStateLayout CustomStateLayout(@LayoutRes int layutID, @LayoutState int state, boolean showState){
-        if(state == STATE_LOADING) {
-            if(mLoadingLayout != null) {
-                removeView(mLoadingLayout);
-            }
-            mLoadingLayout = createLayout(layutID);
-
-        }else if(state == STATE_EMPTY) {
-            if(mEmptyLayout != null) {
-                removeView(mEmptyLayout);
-            }
-            mEmptyLayout = createLayout(layutID);
-
-        }else if(state == STATE_ERROR) {
-            if(mErrorLayout != null) {
-                removeView(mErrorLayout);
-            }
-            mErrorLayout = createLayout(layutID);
-
-        }else if(state == STATE_EXCEPT) {
-            if(mExceptLayout != null) {
-                removeView(mExceptLayout);
-            }
-            mExceptLayout = createLayout(layutID);
-        }
-        if(showState) {
-            showStateLayout(state);
-        }
-        return this;
+        return CustomStateLayout(LayoutInflater.from(getContext()).inflate(layutID, this, false), state, showState);
     }
 
     public MultiStateLayout setLoadingCancelAble(boolean loadingCancel){
@@ -329,12 +347,15 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
 
     private View createLayout(int layoutid){
         View inflateView = LayoutInflater.from(mContext).inflate(layoutid, this, false);
-        ViewGroup.LayoutParams layoutParams = inflateView.getLayoutParams();
-        if(!( layoutParams instanceof RelativeLayout.LayoutParams )) {
-            layoutParams = new RelativeLayout.LayoutParams(-1, -1);
-        }
         inflateView.setClickable(true);
-        addView(inflateView, layoutParams);
+        //        ViewGroup.LayoutParams layoutParams = inflateView.getLayoutParams();
+        //        if(!( layoutParams instanceof RelativeLayout.LayoutParams )) {
+        //            layoutParams = new RelativeLayout.LayoutParams(-1, -1);
+        //        }
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//            inflateView.setElevation(26);
+//        }
+        addView(inflateView, -1, -1);
         return inflateView;
     }
 
@@ -392,13 +413,25 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         return mEmptyLayout;
     }
 
-    public
+
     @LayoutState
-    int getLayoutState(){
+    public int getCurrentState(){
         return mLayoutState;
+    }
+
+    public boolean isShowEmpty(){
+        return mLayoutState == LayoutState.STATE_EMPTY;
+    }
+
+    public boolean isShowError(){
+        return mLayoutState == LayoutState.STATE_ERROR;
     }
 
     public boolean isShowSucceed(){
         return mLayoutState == LayoutState.STATE_EXCEPT;
+    }
+
+    public boolean isShowLoading(){
+        return mLayoutState == LayoutState.STATE_LOADING;
     }
 }

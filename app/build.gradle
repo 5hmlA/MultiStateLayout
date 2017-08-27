@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply from: 'https://raw.githubusercontent.com/ZuYun/workspace/master/config.gradle'
+//apply from: 'https://raw.githubusercontent.com/ZuYun/workspace/master/config.gradle'
 
 android {
     compileSdkVersion config.compileSdkVersion
