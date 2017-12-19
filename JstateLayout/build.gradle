@@ -1,17 +1,12 @@
 apply plugin: 'com.android.library'
-apply from: "../bintrayUpload2.gradle"
-//apply from: 'https://raw.githubusercontent.com/ZuYun/workspace/master/config.gradle'
+//apply from: "../bintrayUpload2.gradle"
 
 android {
-    compileSdkVersion config.compileSdkVersion
-    buildToolsVersion config.buildToolsVersion
-
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
     defaultConfig {
-        minSdkVersion config.minSdkVersion
-        targetSdkVersion config.targetSdkVersion
-        versionCode config.versionCode
-        versionName config.versionName
-
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
     }
     buildTypes {
         release {
@@ -22,6 +17,5 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile thirdLibs.appcompat
+    implementation deps.support.app_compat
 }

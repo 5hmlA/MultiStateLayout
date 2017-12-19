@@ -25,7 +25,7 @@
         <!--<item name="loading">@layout/j_multitylayout_loading</item>-->
     <style name="multistate" parent="Jmultistate.style">
         <item name="error">@layout/j_multitylayout_error</item>
-        <item name="loading">@layout/cust_loading2</item>
+        <!--<item name="loading">@layout/cust_loading2</item>-->
         <item name="empty">@layout/j_multitylayout_empty</item>
         <item name="state">loading</item>
     </style>

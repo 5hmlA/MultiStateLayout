@@ -1,6 +1,7 @@
 package jonas.jlayout;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.PointF;
@@ -91,8 +92,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
 
     public MultiStateLayout(Context context, AttributeSet attrs, int defStyleAttr){
         super(context, attrs, defStyleAttr);
-        TypedArray a = context
-                .obtainStyledAttributes(attrs, R.styleable.MultiStateLayout, defStyleAttr, R.style.Jmultistate_style);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MultiStateLayout, defStyleAttr, R.style.Jmultistate_style);
         //        layout_error_resid = a.getResourceId(R.styleable.MultiStateLayout_error, R.layout.j_multitylayout_error);
         //        layout_empty_resid = a.getResourceId(R.styleable.MultiStateLayout_empty, R.layout.j_multitylayout_empty);
         //        layout_loading_resid = a.getResourceId(R.styleable.MultiStateLayout_loading, R.layout.j_multitylayout_loading);
@@ -171,13 +171,22 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         super.onAttachedToWindow();
     }
 
+    public void changeBgColor(View view, int color){
+        view.setBackgroundColor(color);
+        if(view instanceof ViewGroup) {
+            for(int i = 0; i<( (ViewGroup)view ).getChildCount(); i++) {
+                changeBgColor(( (ViewGroup)view ).getChildAt(i), color);
+            }
+        }
+    }
+
     private synchronized MultiStateLayout showStateLayout2(@LayoutState int state){
         mLayoutState = state;
         if(mLayoutState == STATE_LOADING) {
             if(mLoadingLayout == null) {
                 createLoadingLayout();
             }else {
-                visibleState(mLoadingLayout);
+                visibleState(mCurrentStateLayout = mLoadingLayout);
             }
             if(mLoadingLayout != null) {
                 mLoadingLayout.setOnClickListener(this);
@@ -186,7 +195,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
             if(mLoadingClor != 0) {
-                mLoadingLayout.setBackgroundColor(mLoadingClor);
+                changeBgColor(mLoadingLayout, mLoadingClor);
             }
         }else if(mLayoutState == STATE_EMPTY) {
             if(mEmptyLayout == null) {
@@ -197,7 +206,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
                     }
                 }
             }else {
-                visibleState(mEmptyLayout);
+                visibleState(mCurrentStateLayout = mEmptyLayout);
             }
             mCurrentStateLayout = mEmptyLayout;
             goneOthers(mLoadingLayout);
@@ -211,7 +220,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
                     }
                 }
             }else {
-                visibleState(mErrorLayout);
+                visibleState(mCurrentStateLayout = mErrorLayout);
             }
             mCurrentStateLayout = mErrorLayout;
             goneOthers(mLoadingLayout);
@@ -238,7 +247,7 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     private void goneOthers(View view){
         if(view != null) {
             removeView(view);
-//            view.setVisibility(GONE);
+            //            view.setVisibility(GONE);
         }
     }
 
@@ -248,8 +257,8 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         }else {
             addView(child, -1, -1);
         }
-//            child.setVisibility(VISIBLE);
-//            bringChildToFront(child);
+        //            child.setVisibility(VISIBLE);
+        //            bringChildToFront(child);
     }
 
     private void createErrorLayout(){
@@ -262,10 +271,6 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
 
     private void createLoadingLayout(){
         mLoadingLayout = createLayout(layout_loading_resid);
-    }
-
-    public MultiStateLayout CustomStateLayout(View view, @LayoutState int state){
-        return CustomStateLayout(view, state, false);
     }
 
     /**
@@ -306,15 +311,44 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     }
 
     /**
-     * 设置 自定义 状态布局
+     * 设置 自定义 状态布局<br>
      *
      * @param layutID
      *         布局id
      * @param state
      *         对应的状态
      */
-    public MultiStateLayout CustomStateLayout(@LayoutRes int layutID, @LayoutState int state){
-        return CustomStateLayout(layutID, state, false);
+    public MultiStateLayout registStateLayout(@LayoutRes int layutID, @LayoutState int state){
+        System.out.println("=========registStateLayout==============");
+        if(state == STATE_EMPTY) {
+            layout_empty_resid = layutID;
+        }else if(state == STATE_ERROR) {
+            layout_error_resid = layutID;
+        }else if(state == STATE_LOADING) {
+            layout_loading_resid = layutID;
+            if(mLayoutState == STATE_LOADING) {
+                //如果当前是loading的话 需要移除原来的loading 重新加载新的loading,因为一开始可能就是loading状态(不可能会是empty,error)
+                CustomStateLayout(LayoutInflater.from(getContext()).inflate(layout_loading_resid, this, false), state, true);
+            }
+        }
+        return this;
+    }
+
+    public MultiStateLayout registStateLayout(View custView, @LayoutState int state){
+        if(state == STATE_EMPTY) {
+            mEmptyLayout = custView;
+        }else if(state == STATE_ERROR) {
+            mErrorLayout = custView;
+        }else if(state == STATE_LOADING) {
+            if(mLayoutState == STATE_LOADING) {
+                CustomStateLayout(custView, state, true);
+            }else {
+                mLoadingLayout = custView;
+            }
+        }else if(state == STATE_EXCEPT) {
+            mExceptLayout = custView;
+        }
+        return this;
     }
 
     /**
@@ -346,15 +380,15 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     }
 
     private View createLayout(int layoutid){
-        View inflateView = LayoutInflater.from(mContext).inflate(layoutid, this, false);
+        View inflateView = mCurrentStateLayout = LayoutInflater.from(mContext).inflate(layoutid, this, false);
         inflateView.setClickable(true);
         //        ViewGroup.LayoutParams layoutParams = inflateView.getLayoutParams();
         //        if(!( layoutParams instanceof RelativeLayout.LayoutParams )) {
         //            layoutParams = new RelativeLayout.LayoutParams(-1, -1);
         //        }
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//            inflateView.setElevation(26);
-//        }
+        //        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        //            inflateView.setElevation(26);
+        //        }
         addView(inflateView, -1, -1);
         return inflateView;
     }
@@ -372,12 +406,12 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         super.dispatchDraw(canvas);
     }
 
-    private int dp2px(float dpVal){
-        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, getResources().getDisplayMetrics());
+    public static int dp2px(float dpVal){
+        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dpVal, Resources.getSystem().getDisplayMetrics());
     }
 
-    private int sp2px(float dpVal){
-        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, dpVal, getResources().getDisplayMetrics());
+    public static int sp2px(float dpVal){
+        return (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, dpVal, Resources.getSystem().getDisplayMetrics());
     }
 
     public void showStateSucceed(){

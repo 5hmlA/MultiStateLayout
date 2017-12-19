@@ -27,7 +27,9 @@ public class ScrollingActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mMsl = ( (MultiStateLayout)findViewById(R.id.msl) ).setLoadingCancelAble(true)
-                .showStateLayout(MultiStateLayout.LayoutState.STATE_LOADING).setRevealable(false);
+//                .showStateLayout(MultiStateLayout.LayoutState.STATE_LOADING)
+                .setRevealable(false);
+        mMsl.registStateLayout(R.layout.cust_loading2, MultiStateLayout.LayoutState.STATE_LOADING);
         //        mMsl.CustomStateLayout(R.layout.cust_loading2, MultiStateLayout.LayoutState.STATE_EMPTY);
         FloatingActionButton fab = (FloatingActionButton)findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +73,7 @@ public class ScrollingActivity extends AppCompatActivity {
         textView.setTextSize(39);
         textView.setText("jiaz 成功");
         textView.setBackgroundColor(Color.WHITE);
-        mMsl.CustomStateLayout(textView, MultiStateLayout.LayoutState.STATE_EXCEPT).setLoadingCancelAble(true);
+        mMsl.registStateLayout(textView, MultiStateLayout.LayoutState.STATE_EXCEPT).setLoadingCancelAble(true);
     }
 
     @Override
