@@ -8,12 +8,14 @@ import android.graphics.PointF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -37,7 +39,13 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     private PointF mDown;
     private PointF mCenter;
     private RevealHelper mRevealHelper;
-    private int mLoadingClor;
+    private int mLoadingBgClor = STATE_UNMODIFY;
+    private TextView mErrorLayoutTips;
+    private CharSequence mErrorTips;
+    private CharSequence mLoadingTips;
+    private CharSequence mEmptyTips;
+    private TextView mEmptyLayoutTips;
+    private TextView mLoadingLayoutTips;
 
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({STATE_UNMODIFY, STATE_LOADING, STATE_ERROR, STATE_EMPTY, STATE_EXCEPT})
@@ -172,8 +180,8 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     }
 
     public void changeBgColor(View view, int color){
-        view.setBackgroundColor(color);
         if(view instanceof ViewGroup) {
+            view.setBackgroundColor(color);
             for(int i = 0; i<( (ViewGroup)view ).getChildCount(); i++) {
                 changeBgColor(( (ViewGroup)view ).getChildAt(i), color);
             }
@@ -190,12 +198,15 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
             }
             if(mLoadingLayout != null) {
                 mLoadingLayout.setOnClickListener(this);
+                if(( mLoadingLayoutTips = mLoadingLayout.findViewById(R.id.j_multity_loading_msg) ) != null && !TextUtils.isEmpty(mLoadingTips)) {
+                    mLoadingLayoutTips.setText(mLoadingTips);
+                }
             }
             mCurrentStateLayout = mLoadingLayout;
             goneOthers(mErrorLayout);
             goneOthers(mEmptyLayout);
-            if(mLoadingClor != 0) {
-                changeBgColor(mLoadingLayout, mLoadingClor);
+            if(mLoadingBgClor != STATE_UNMODIFY) {
+                changeBgColor(mLoadingLayout, mLoadingBgClor);
             }
         }else if(mLayoutState == STATE_EMPTY) {
             if(mEmptyLayout == null) {
@@ -203,6 +214,9 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
                 if(mEmptyLayout != null) {
                     if(mEmptyLayout.findViewById(R.id.j_multity_retry) != null) {
                         mEmptyLayout.findViewById(R.id.j_multity_retry).setOnClickListener(this);
+                    }
+                    if(( mEmptyLayoutTips = mErrorLayout.findViewById(R.id.j_multity_empt_msg) ) != null && !TextUtils.isEmpty(mEmptyTips)) {
+                        mEmptyLayoutTips.setText(mEmptyTips);
                     }
                 }
             }else {
@@ -217,6 +231,9 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
                 if(mErrorLayout != null) {
                     if(mErrorLayout.findViewById(R.id.j_multity_retry) != null) {
                         mErrorLayout.findViewById(R.id.j_multity_retry).setOnClickListener(this);
+                    }
+                    if(( mErrorLayoutTips = mErrorLayout.findViewById(R.id.j_multity_error_msg) ) != null && !TextUtils.isEmpty(mErrorTips)) {
+                        mErrorLayoutTips.setText(mErrorTips);
                     }
                 }
             }else {
@@ -319,7 +336,6 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
      *         对应的状态
      */
     public MultiStateLayout registStateLayout(@LayoutRes int layutID, @LayoutState int state){
-        System.out.println("=========registStateLayout==============");
         if(state == STATE_EMPTY) {
             layout_empty_resid = layutID;
         }else if(state == STATE_ERROR) {
@@ -422,9 +438,32 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
         showStateLayout(MultiStateLayout.LayoutState.STATE_LOADING);
     }
 
-    public void showStateLoading(@ColorInt int loadingClor){
-        mLoadingClor = loadingClor;
-        showStateLayout(MultiStateLayout.LayoutState.STATE_LOADING);
+    public void setLoadingPageBgColor(@ColorInt int loadingClor){
+        mLoadingBgClor = loadingClor;
+        if(mLoadingLayout != null && mLoadingBgClor != STATE_UNMODIFY) {
+            changeBgColor(mLoadingLayout, mLoadingBgClor);
+        }
+    }
+
+    public void setLoadingTips(CharSequence loadingTips){
+        mLoadingTips = loadingTips;
+        if(mLoadingLayoutTips != null) {
+            mLoadingLayoutTips.setText(mLoadingTips);
+        }
+    }
+
+    public void setEmptyTips(CharSequence emptyTips){
+        mEmptyTips = emptyTips;
+        if(mEmptyLayoutTips != null) {
+            mEmptyLayoutTips.setText(mEmptyTips);
+        }
+    }
+
+    public void setErrorTips(CharSequence errorTips){
+        mErrorTips = errorTips;
+        if(mErrorLayoutTips != null) {
+            mErrorLayoutTips.setText(mErrorTips);
+        }
     }
 
     public void showStateEmpty(){
@@ -446,7 +485,6 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
     public View getEmptyLayout(){
         return mEmptyLayout;
     }
-
 
     @LayoutState
     public int getCurrentState(){

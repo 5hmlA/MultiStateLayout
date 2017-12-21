@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-//apply from: "../bintrayUpload2.gradle"
+apply from: "../bintrayUpload.gradle"
 
 android {
     compileSdkVersion build_versions.target_sdk
