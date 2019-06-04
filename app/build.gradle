@@ -2,11 +2,11 @@ apply plugin: 'com.android.application'
 //apply from: 'https://raw.githubusercontent.com/ZuYun/workspace/master/config.gradle'
 
 android {
-    compileSdkVersion build_versions.target_sdk
-    buildToolsVersion build_versions.build_tools
+    compileSdkVersion 28
+
     defaultConfig {
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
+        minSdkVersion 19
+        targetSdkVersion 28
         applicationId "jonas.smartstatelayout"
     }
     buildTypes {
@@ -18,6 +18,6 @@ android {
 }
 
 dependencies {
-    implementation deps.support.design
+    implementation 'com.google.android.material:material:1.0.0'
     implementation project(':JstateLayout')
 }
