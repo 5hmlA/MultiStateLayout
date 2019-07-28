@@ -77,9 +77,9 @@ public class MultiStateLayout extends RelativeLayout implements View.OnClickList
   public void onClick(View v) {
     int id = v.getId();
     if (id == R.id.j_multity_retry) {
-      showStateLayout(STATE_LOADING);
       if (mL != null && (mLastRetryTime == 0 || System.currentTimeMillis() - mLastRetryTime > 600)) {
         mLastRetryTime = System.currentTimeMillis();
+        showStateLayout(STATE_LOADING);
         mL.onRetry(mLayoutState);
       }
     } else {
