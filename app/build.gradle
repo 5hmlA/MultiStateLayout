@@ -20,5 +20,4 @@ android {
 dependencies {
     implementation 'com.google.android.material:material:1.0.0'
     implementation project(':JstateLayout')
-    implementation 'com.yun.ospl:adapter:0.1.13-X'
 }
