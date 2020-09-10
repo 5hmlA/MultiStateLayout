@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JstateLayout/JstateLayout.iml" filepath="$PROJECT_DIR$/JstateLayout/JstateLayout.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MultiStateLayout.iml" filepath="$PROJECT_DIR$/MultiStateLayout.iml" />
-      <module fileurl="file://G:\ITworld\BluePrint\0mygithub\MultiStateLayout\SmartStateLayout.iml" filepath="G:\ITworld\BluePrint\0mygithub\MultiStateLayout\SmartStateLayout.iml" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JstateLayout/JstateLayout.iml" filepath="$PROJECT_DIR$/JstateLayout/JstateLayout.iml" group="MultiStateLayout/JstateLayout" />
+      <module fileurl="file://$PROJECT_DIR$/MultiStateLayout.iml" filepath="$PROJECT_DIR$/MultiStateLayout.iml" group="MultiStateLayout" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="MultiStateLayout/app" />
     </modules>
   </component>
 </project>

@@ -35,6 +35,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:background="#f0f0"
+            android:tag="top"
             android:onClick="retry"
             android:text="@string/large_text2"/>
 
@@ -47,6 +48,7 @@
                 android:layout_width="wrap_content"
                 android:background="#ff00ff"
                 android:alpha="0.1"
+                android:tag="top"
                 android:layout_height="match_parent"
                 android:text="0000000000000000000000000000000000000000000000000000000000000000"/>
         </jonas.jlayout.revealLayout.JRelativelayout>
