@@ -2,11 +2,14 @@ package jonas.jlayout;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Outline;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewOutlineProvider;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 /**
  * @another 江祖赟
@@ -33,6 +36,20 @@ public class JConstraintLayout21 extends ConstraintLayout {
 	    path.reset();
         setClickable(true);
 	    path.addCircle(width / 2, height / 2, Math.min(width, height) / 2, Path.Direction.CCW);
+    }
+
+    @Override
+    protected void onFinishInflate(){
+        super.onFinishInflate();
+        setClipToOutline(true);
+        setOutlineProvider(new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline){
+                outline.setAlpha(0.5F);
+            }
+        });
+//        setOutlineAmbientShadowColor();
+//        setOutlineSpotShadowColor();
     }
 
     Drawable mViewBackground;
