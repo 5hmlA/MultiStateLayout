@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.animation.PathInterpolator;
@@ -37,6 +38,8 @@ public class AniSJConstraintLayout extends ConstraintLayout {
     private float dimensionRatioValue = 0;
     private ObjectAnimator mPressAnimator;
     private boolean determinedWidthSide;
+    private int heightPixels;
+    private int widthPixels;
 
     public AniSJConstraintLayout(@NonNull Context context) {
         this(context, (AttributeSet)null);
@@ -52,7 +55,6 @@ public class AniSJConstraintLayout extends ConstraintLayout {
 
     public AniSJConstraintLayout(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
-        this.sidesMargin = MultiStateLayout.dp2px(24.0F);
         @SuppressLint("CustomViewStyleable") TypedArray a = this.getContext().obtainStyledAttributes(attrs, R.styleable.ConstraintLayout_Layout, defStyleAttr, defStyleRes);
         String dimensionRatio = a.getString(R.styleable.ConstraintLayout_Layout_layout_constraintDimensionRatio);
         a.recycle();
@@ -88,13 +90,16 @@ public class AniSJConstraintLayout extends ConstraintLayout {
             String extra = dimensionRatio.substring(extraIndex + 1);
             if("full".equalsIgnoreCase(extra)) {
                 //横向全屏
+                DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+                widthPixels = displayMetrics.widthPixels;
+                heightPixels = displayMetrics.heightPixels;
             }
             //去掉后面的>extra
             dimensionRatio = dimensionRatio.substring(0, extraIndex);
             len = dimensionRatio.length();
         }
 
-        //w,10:1,20 (最后的20是两边边距)  find marg
+        //w,10:1,20 (最后的20是两边边距)  find marg  设置为match或者具体值的时候才会生效
         int endIndex = dimensionRatio.lastIndexOf(',');//逗号 44
         String margStr;//两边边距
         if (endIndex <= commaIndex) {
@@ -114,7 +119,7 @@ public class AniSJConstraintLayout extends ConstraintLayout {
         String widthPercentageStr;
         if (colonIndex >= 0 && colonIndex < len - 1) {
             widthPercentageStr = dimensionRatio.substring(commaIndex, colonIndex);
-            //分母 >高
+            //高
             heightPercentageStr = dimensionRatio.substring(colonIndex + 1, endIndex);
             if (widthPercentageStr.length() > 0 && heightPercentageStr.length() > 0) {
                 try {
@@ -152,40 +157,43 @@ public class AniSJConstraintLayout extends ConstraintLayout {
     }
 
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        //MeasureSpec.AT_MOST == wrap_content
+        //MeasureSpec.EXACTLY == match_parent / 100dp exactly size
         if(dimensionRatioValue == 0) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+            int measuredHeight = getMeasuredHeight();
             return;
         }
         //以宽度为准 高度根据比例计算 只管AT_MOST 和 EXACTLY
         if(determinedWidthSide) {
             int orignWidth = MeasureSpec.getSize(widthMeasureSpec);
             //确定宽去计算高
-            boolean isWrapContent = MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.UNSPECIFIED;
+            boolean isWrapContent = MeasureSpec.getMode(widthMeasureSpec) == MeasureSpec.AT_MOST;
             if(orignWidth == 0 || isWrapContent) {
                 //需要计算自己的值
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
                 if(isWrapContent) {
-                    int measuredWidth = getMeasuredWidth();
+                    int measuredWidth = Math.max(getMeasuredWidth(), widthPixels);
                     setMeasuredDimension(measuredWidth,
                             Math.round(measuredWidth * dimensionRatioValue));
                 }
             } else {
-                int width = orignWidth - this.sidesMargin * 2;
+                int width = Math.max(orignWidth, widthPixels) - this.sidesMargin * 2;
                 super.onMeasure(MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(Math.round((float)width * this.dimensionRatioValue), MeasureSpec.EXACTLY));
             }
         } else {
             int orignHeight = MeasureSpec.getSize(heightMeasureSpec);
-            boolean isWrapContent = MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.UNSPECIFIED;
+            boolean isWrapContent = MeasureSpec.getMode(heightMeasureSpec) == MeasureSpec.AT_MOST;
             if(orignHeight == 0 || isWrapContent) {
                 //需要计算自己的值
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
                 if(isWrapContent) {
-                    int measuredHeight = getMeasuredHeight();
+                    int measuredHeight = Math.max(getMeasuredHeight(), heightPixels);
                     setMeasuredDimension(Math.round(measuredHeight*dimensionRatioValue),
                             measuredHeight);
                 }
             }else {
-                int height = orignHeight - this.sidesMargin * 2;
+                int height = Math.max(orignHeight, heightPixels) - this.sidesMargin * 2;
                 super.onMeasure(MeasureSpec.makeMeasureSpec(Math.round((float)height * this.dimensionRatioValue), MeasureSpec.EXACTLY),
                         MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY));
             }

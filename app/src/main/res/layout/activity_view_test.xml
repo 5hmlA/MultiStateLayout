@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <jonas.jlayout.layout.AniSJConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#f0ff"
-    app:layout_constraintDimensionRatio="w,1:2"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:background="#f0ff"
+    android:clickable="true"
+    android:focusable="true"
+    app:layout_constraintDimensionRatio="w,1:2,10>full">
 
     <ImageView
-        android:src="#f0f"
         android:layout_width="400dp"
-        android:layout_height="400dp" />
+        android:layout_height="400dp"
+        android:src="#f0f" />
 </jonas.jlayout.layout.AniSJConstraintLayout>
