@@ -11,6 +11,8 @@ public class ShapeTestActivity extends AppCompatActivity {
 	@Override protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-		setContentView(R.layout.activity_shape_test);
+//		setContentView(R.layout.activity_shape_test);
+		setContentView(R.layout.activity_view_test);
+//		finishAndRemoveTask();
 	}
 }

@@ -1,16 +1,18 @@
 package jonas.smartstatelayout;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import jonas.jlayout.MultiStateLayout;
 import jonas.jlayout.OnStateClickListener;
 import jonas.jlayout.revealLayout.JRelativelayout;
@@ -36,7 +38,8 @@ public class ScrollingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 setCustom();
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null)
+                startActivity(new Intent(ScrollingActivity.this, ShapeTestActivity.class));
+                Snackbar.make(view, "Replace with your own action22222", Snackbar.LENGTH_LONG).setAction("Action", null)
                         .show();
             }
         });
@@ -69,6 +72,7 @@ public class ScrollingActivity extends AppCompatActivity {
     }
 
     private void setCustom(){
+        startActivity(new Intent(ScrollingActivity.this, ShapeTestActivity.class));
         TextView textView = new TextView(this);
         textView.setTextSize(39);
         textView.setText("jiaz 成功");
